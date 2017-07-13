@@ -75,3 +75,21 @@ print()
 # Gera uma lista com multiplicação dos seus valores originais
 lista3 = [[x ** 2, x ** 3] for x in range(4)]
 print("Lista Multiplicada: ", lista3)
+print()
+
+# Soma e Lista os elementos contidos em M
+print("Soma dos elementos de M: ",list(map(sum,M)))
+print()
+
+
+#### Dictionaries ####
+
+D = {'food': 'Spam', 'quantity': 4, 'color':'pink'}
+
+print("Dicionário D: ",D)
+
+print("Valor de food: ",D['food'])
+
+D['quantity'] += 1
+
+print("Dicionário D + 1 na quantidade: ",D)
