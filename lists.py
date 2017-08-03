@@ -93,3 +93,55 @@ print("Valor de food: ",D['food'])
 D['quantity'] += 1
 
 print("Dicionário D + 1 na quantidade: ",D)
+
+# Creating a Dictionary from zero
+
+E = {}
+E['name'] = 'Bruno'
+E['job'] = 'DevOps'
+E['age'] = 27
+##### VERIFICAR ESSA ETAPA DO PRINT
+print("Dicionário completo do Bruno: ",E)
+print("Meu nome é %s" % E['name'])
+print("Sou %s" % E['job'])
+print("Tenho %d anos" % E['age'])
+
+print("My name is %s, i'm %s and i'm %d years old" % (E['name'],E['job'],E['age']))
+
+print("My name is {}, i'm {} and i'm {} years old".format(E['name'],E['job'],E['age']))
+
+F = {'b': 2, 'a': 1, 'c': 3}
+
+Ks = list(F.keys())
+
+def print_key():
+    for key in Ks:
+        print(key, '=>', F[key])
+
+def print_key_sorted():
+    for key in sorted(F):
+        print(key, '=>', F[key])
+
+print("Desordenado:",Ks)
+
+print_key()
+
+Ks.sort()
+
+print("Ordenado:",Ks)
+
+print_key()
+
+def upper_string(word):
+    for c in word:
+        print(c.upper())
+
+upper_string('spam')
+
+def print_string_n_times(number,word):
+    x = number
+    while x > 0:
+        print(word * x)
+        x -= 1
+
+print_string_n_times(4,'spam')
