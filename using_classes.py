@@ -24,7 +24,7 @@ class User:
         self.weight = int(input('Enter Weight (in kilograms): '))
 
     def save(self):
-        f = open('user.info','w')
+        f = open('user.info','a')
         f.write(self.name + '\n')
         f.write(str(self.age) + '\n')
         f.write(str(self.height) + '\n')
