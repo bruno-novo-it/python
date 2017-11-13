@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
 
-# To install: pip install requests
+# To install: 
 
-from util import bcolors
+# pip install requests
+# pip install colorama
+
+from colorama import *
 import sys
 import requests
 import json
@@ -12,51 +15,70 @@ import hmac
 import urllib
 import http.client
 import time
+import random
+import uuid
 
 from collections import OrderedDict
 
-#Coin_Type = str(sys.argv[1])
-#ticker = "https://www.mercadobitcoin.net/api/%s/ticker/" % Coin_Type
-#orderbook = "https://www.mercadobitcoin.net/api/%s/orderbook/" % Coin_Type
-#trades = "https://www.mercadobitcoin.net/api/%s/trades/" % Coin_Type
-
-#resp_ticker = requests.get(ticker) # Status code, example: 200
-#resp_orderbook = requests.get(orderbook)
-#resp_trades = requests.get(trades)
-
-#print("\n{}Ticker Content:{} {}".format(bcolors.Blue,bcolors.Final,resp_ticker.content["ticker"]))
-
-## LTC ##
-
-#LTC_Ticker_URL = "https://www.mercadobitcoin.net/api/LTC/ticker/"
-
-#LTC_Ticker_Response = requests.get(LTC_Ticker_URL)
+### Crypto Compare API ###
 
 ## BTC ##
 
-#BTC_Ticker_URL = "https://www.mercadobitcoin.net/api/BTC/ticker/"
+BTC_crypto_compare_url = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,BRL"
 
-#BTC_Ticker_Response = requests.get(BTC_Ticker_URL)
+BTC_URL_Response = requests.get(BTC_crypto_compare_url)
 
-## Print Results ##
-#print("Bitcoin Price: {}".format(BTC_Ticker_Response.json()["ticker"]["last"]),
-#        "\nLitcoin Price: {}".format(LTC_Ticker_Response.json()["ticker"]["last"]))
+Bitcoin_updated_price_usd = float(BTC_URL_Response.json()["USD"])
+Bitcoin_updated_price_brl = float(BTC_URL_Response.json()["BRL"])
+
+## LTC ##
+
+LTC_crypto_compare_url = "https://min-api.cryptocompare.com/data/price?fsym=LTC&tsyms=USD,BRL"
+
+LTC_URL_Response = requests.get(LTC_crypto_compare_url)
+
+Litecoin_updated_price_usd = float(LTC_URL_Response.json()["USD"])
+Litecoin_updated_price_brl = float(LTC_URL_Response.json()["BRL"])
+
+## Print RealTime Prices ##
+def print_the_prices():
+    print("{}\nBitcoin Updated Price(USD):{} {}".format(Fore.YELLOW, Style.RESET_ALL,
+        Bitcoin_updated_price_usd))
+    print("{}Bitcoin Updated Price(BRL):{} {}".format(Fore.YELLOW, Style.RESET_ALL,
+        Bitcoin_updated_price_brl))
+    print("\nLitecoin Updated Price(USD): {}".format(
+        Litecoin_updated_price_usd))
+    print("Litecoin Updated Price(BRL): {}".format(
+        Litecoin_updated_price_brl))
+
+## Print the Updated Values
+print("{}\nCrypto Currency Updated Prices{}".format(Fore.BLUE, Style.RESET_ALL))
+print_the_prices()
 
 ### Mercado Bitcoin ###
 
 # PIN de segurança ==> 4665
 # Nome: tab-trader-app
-# Identificador: 1a8cb71ea5b65dccec8fcb4acffcc898
-# Segredo: 6b40d34d176bf95c4e24ba7dc06fa64305891352dffc3c64efcc3543d85a7678
+# Identificador: 1a-Big_Number
+# Segredo: 6b-Very_Big_Number
 
-# Constantes e Parâmetros
-MB_TAPI_ID = '1a8cb71ea5b65dccec8fcb4acffcc898'
-MB_TAPI_SECRET = '6b40d34d176bf95c4e24ba7dc06fa64305891352dffc3c64efcc3543d85a7678'
+# Variáveis e Parâmetros
+MB_TAPI_ID = 'Identificador'
+MB_TAPI_SECRET = 'segredo'
 REQUEST_HOST = 'www.mercadobitcoin.net'
 REQUEST_PATH = '/tapi/v3/'
 
 # Nonce
-tapi_nonce = int(str(time.time()).replace(".", ""))
+## I like using uuid1, since it generates the uuid based on 
+## current host and time and has the time property that you can 
+## extract if you need both.
+def generate_nonce_timestamp():
+    """Generate pseudo-random number and seconds since epoch (UTC)."""
+    nonce = uuid.uuid1()
+    oauth_timestamp = str(nonce.time)
+    return oauth_timestamp
+
+tapi_nonce = generate_nonce_timestamp()
 
 # Parâmetros (variam de acordo com o método)
 params = {
@@ -80,6 +102,28 @@ headers = {
     'TAPI-ID': MB_TAPI_ID,
     'TAPI-MAC': TAPI_MAC
 }
+# Função para Imprimir os Resultados
+def print_the_request():
+    #print("{}\nStatus Code:{} {}".format(
+    #     Fore.RED, Fore.RESET, response_json['status_code']))
+    #print(json.dumps(response_json, indent=4))
+    #print(response_json['response_data']['balance'])
+    print("{}\nBalance Available(BRL):{} {}".format(
+        Fore.GREEN, Style.RESET_ALL, Balance_available_brl))
+    print("{}Balance Total(BRL):{} {}".format(
+        Fore.GREEN, Style.RESET_ALL, Balance_total_brl))
+    print("{}\nBalance Available(BTC):{} {}".format(
+        Fore.YELLOW, Style.RESET_ALL, Balance_available_btc))
+    print("{}Balance Total(BTC):{} {}".format(
+        Fore.YELLOW, Style.RESET_ALL, Balance_total_btc))
+    print("{}Amount Open Orders(BTC):{} {}".format(
+        Fore.YELLOW, Style.RESET_ALL, Balance_amount_open_orders_btc))
+    print("\nBalance Available(LTC): {}".format(
+        Balance_available_ltc))
+    print("Balance Total(LTC): {}".format(
+        Balance_total_ltc))
+    print("Amount Open Orders(LTC): {}".format(
+        Balance_amount_open_orders_ltc))
 
 # Realizar requisição POST
 try:
@@ -92,30 +136,27 @@ try:
 
     # É fundamental utilizar a classe OrderedDict para preservar a ordem dos elementos
     response_json = json.loads(response, object_pairs_hook=OrderedDict)
-    print("status: %s" % response_json['status_code'])
-    print(json.dumps(response_json, indent=4))
+
+    Balance_available_brl = float(
+        response_json['response_data']['balance']['brl']['available'])
+    Balance_total_brl = float(
+        response_json['response_data']['balance']['brl']['total'])
+    Balance_available_btc = float(
+        response_json['response_data']['balance']['btc']['available'])
+    Balance_total_btc = float(
+        response_json['response_data']['balance']['btc']['total'])
+    Balance_amount_open_orders_btc = float(
+        response_json['response_data']['balance']['btc']['amount_open_orders'])
+    Balance_available_ltc = float(
+        response_json['response_data']['balance']['ltc']['available'])
+    Balance_total_ltc = float(
+        response_json['response_data']['balance']['ltc']['total'])
+    Balance_amount_open_orders_ltc = float(
+        response_json['response_data']['balance']['ltc']['amount_open_orders'])
+
+    print("{}\nMercado Bitcoin API Response{}".format(Fore.RED, Style.RESET_ALL))
+    print_the_request()
+
 finally:
     if conn:
         conn.close()
-
-
-### Crypto Compare API ###
-
-## BTC ##
-
-#BTC_crypto_compare_url = "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,BRL"
-
-#BTC_URL_Response = requests.get(BTC_crypto_compare_url)
-
-## LTC ##
-
-#LTC_crypto_compare_url = "https://min-api.cryptocompare.com/data/price?fsym=LTC&tsyms=USD,BRL"
-
-#LTC_URL_Response = requests.get(LTC_crypto_compare_url)
-
-## Print Results ##
-
-# print("Bitcoin Price(USD): {}".format(BTC_URL_Response.json()["USD"]),
-#         "\nBitcoin Price(BRL): {}".format(BTC_URL_Response.json()["BRL"]),
-#         "\nLitecoin Price(USD): {}".format(LTC_URL_Response.json()["USD"]),
-#         "\nLitecoin Price(BRL): {}".format(LTC_URL_Response.json()["BRL"]))
