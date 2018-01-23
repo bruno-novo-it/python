@@ -1,0 +1,8 @@
+Parameters:
+  apk_path: app-prd.apk
+  features_path: features/android/features/
+  no_run_tag: instrumentado
+  number_of_devices: 2
+  profile: android
+  report_output_format: html
+  scenario_tag: ''
