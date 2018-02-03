@@ -1,6 +1,6 @@
 import os
 
-photos_dir = r"/Users/brunonovo/Projects/python/Udemy/Programming-Foundations-with-Python/prank"
+photos_dir = r"/Users/brunonovo/Projects/python/Udacity/Programming-Foundations-with-Python/prank"
 
 def rename_files():
     # (1) Get Files From a Folder

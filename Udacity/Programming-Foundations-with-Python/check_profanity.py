@@ -8,7 +8,7 @@ from urllib import urlopen
 
 
 
-movie_quotes_dir = r"/Users/brunonovo/Projects/python/Udemy/Programming-Foundations-with-Python"
+movie_quotes_dir = r"/Users/brunonovo/Projects/python/Udacity/Programming-Foundations-with-Python"
 
 def read_text():
     quotes = open(movie_quotes_dir + "/movie_quotes.txt")
