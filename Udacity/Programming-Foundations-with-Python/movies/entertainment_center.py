@@ -34,4 +34,10 @@ the_count_of_monte_cristo = media.Movie("The COunt of Monte Cristo",
 
 movies = [toy_story, avatar, school_of_rock,ratatouille, the_name_of_the_rose, the_count_of_monte_cristo]
 
-fresh_tomatoes.open_movies_page(movies)
+# fresh_tomatoes.open_movies_page(movies)
+
+# print(media.Movie.valid_ratings)
+
+# print(media.Movie.__doc__)
+
+# print("Print The Name of Class: {}".format(media.Movie.__name__))
