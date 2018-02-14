@@ -5,12 +5,6 @@ import os
 import sys
 import platform
 
-print("Fatorial: {}".format(math_functions.fat(5)))
-
-print("Potência: {}".format(math_functions.pot(2,10)))
-
-print("Área Quadrado: {}\n".format(math_functions.are_quadrado(10)))
-
 # Classe para Testes e Verificar se um resultado 
 class TestMathMethods(unittest.TestCase):
 
@@ -24,4 +18,4 @@ class TestMathMethods(unittest.TestCase):
 
 
 
-print(platform.system())
+#print(platform.system())
