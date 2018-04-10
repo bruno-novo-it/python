@@ -11,6 +11,7 @@ services:
       - MYSQL_USER=mysql
       - MYSQL_PASSWORD=mysql123
       - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     restart: always
     volumes:
        - ./dbdata:/var/lib/mysql
